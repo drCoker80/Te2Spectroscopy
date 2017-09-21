@@ -40,8 +40,7 @@ public class MultipleDatasetDemo1 extends ApplicationFrame implements ActionList
 
 		super(title);
 		final XYSeriesCollection dataset1 = createRandomDataset("Series 1");
-		final JFreeChart chart = ChartFactory.createXYLineChart("Multiple Dataset Demo 1", "Time", "Value",
-				dataset1);
+		final JFreeChart chart = ChartFactory.createXYLineChart("Multiple Dataset Demo 1", "Time", "Value", dataset1);
 		chart.setBackgroundPaint(Color.white);
 
 		this.plot = chart.getXYPlot();
@@ -76,13 +75,16 @@ public class MultipleDatasetDemo1 extends ApplicationFrame implements ActionList
 		setContentPane(content);
 
 	}
-	
+
 	private XYSeriesCollection createRandomDataset(final String name) {
 		final XYSeries series = new XYSeries(name);
-		double value = 100.0;
-		for (int i = 0; i < 500; i++) {
-			series.add(i, value);
-			value = value * (1.0 + Math.random() / 100);
+		double value;
+		double[] window = Config.window;
+		for (int i = 0; i < 100; i++) {
+			if (i >= window[0] && i <= window[1]) {
+				value = Config.JEMFFunction(i);
+				series.add(i, value);
+			}
 		}
 		return new XYSeriesCollection(series);
 	}
